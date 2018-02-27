@@ -1,0 +1,51 @@
+location: westeurope
+resource_group: AnsibleResources
+disk:
+  managed:
+    name: ansiblemanageddisk
+    size: 4
+
+storage:
+  account: ansiblestorageaccount
+  account_type: Standard_LRS
+
+network:
+  name: testvn001
+  address_prefixes: "10.10.0.0/16"
+  subnet:
+    name: subnet001
+    address_prefix: "10.10.0.0/24"
+    virtual_network: testvn001
+  public_ip:
+    allocation_method: Static
+    name: publicip001
+
+securitygroup:
+  name: secgroup001
+  rules:
+    - name: SSH
+      protocol: Tcp
+      destination_port_range: 22
+      access: Allow
+      priority: 101
+      direction: Inbound
+nic:
+  name: testnic001
+  virtual_network: testvn001
+  subnet: subnet001
+  #public_ip_name: publicip001
+  #security_group: secgroup001
+
+vm:
+  name: testvm001
+  size: Standard_DS2_v2
+  storage_container: testvm001
+  storage_blob: testvm001.vhd
+  admin_username: modulus
+  admin_password: Bollar og brusk
+  network_interfaces: testnic001
+  image:
+    offer: CentOS
+    publisher: OpenLogic
+    sku: '7.1'
+    version: latest

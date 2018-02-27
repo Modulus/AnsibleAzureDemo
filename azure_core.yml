@@ -1,0 +1,6 @@
+---
+- name: create resource groups connected to ansible
+  hosts: controller
+  roles:
+    - group
+    - storage

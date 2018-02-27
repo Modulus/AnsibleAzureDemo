@@ -1,0 +1,9 @@
+---
+  - name: Create resource group for all ansible resources
+    azure_rm_resourcegroup:
+      name: "{{resource_group}}"
+      location: "{{location}}"
+      tags:
+        env: "test"
+        role: "ansible"
+        automation: "true"

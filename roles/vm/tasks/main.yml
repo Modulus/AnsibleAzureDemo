@@ -1,0 +1,57 @@
+- name: Create virtual network
+  azure_rm_virtualnetwork:
+    resource_group: "{{resource_group}}"
+    name: "{{network.name}}"
+    address_prefixes: "{{network.address_prefixes}}"
+
+- name: Add subnet
+  azure_rm_subnet:
+    resource_group: "{{resource_group}}"
+    name: "{{network.subnet.name}}"
+    address_prefix: "{{network.subnet.address_prefix}}"
+    virtual_network: "{{network.subnet.virtual_network}}"
+
+- name: Create public ip
+  azure_rm_publicipaddress:
+    resource_group: "{{resource_group}}"
+    allocation_method: "{{network.public_ip.allocation_method}}"
+    name: "{{network.public_ip.name}}"
+
+- name: Create security group that allows SSH
+  azure_rm_securitygroup:
+    resource_group: "{{resource_group}}"
+    name: "{{securitygroup.name}}"
+    rules: "{{securitygroup.rules}}"
+      #- name: SSH
+      #  protocol: Tcp
+      #  destination_port_range: 22
+      ##  access: Allow
+       # priority: 101
+       # direction: Inbound
+
+
+- name: Create NIC
+  azure_rm_networkinterface:
+    resource_group: "{{resource_group}}"
+    name: "{{nic.name}}"
+    virtual_network: "{{nic.virtual_network}}"
+    subnet: "{{nic.subnet}}"
+    public_ip_name: "{{network.public_ip.name}}"
+    security_group: "{{securitygroup.name}}"
+
+- name: Create virtual machine
+  azure_rm_virtualmachine:
+    resource_group: "{{resource_group}}"
+    name: "{{vm.name}}"
+    vm_size: "{{vm.size}}"
+    storage_account: "{{storage.account}}"
+    storage_container: "{{vm.storage_container}}"
+    storage_blob: "{{vm.storage_blob}}"
+    admin_username: "{{vm.admin_username}}"
+    admin_password: "{{vm.admin_password}}"
+    network_interfaces: "{{nic.name}}"
+    image:
+      offer: "{{vm.image.offer}}"
+      publisher: "{{vm.image.publisher}}"
+      sku: "{{vm.image.sku}}"
+      version: "{{vm.image.version}}"

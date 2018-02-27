@@ -1,0 +1,6 @@
+---
+  - name: Deleting resource group and all contents
+    azure_rm_resourcegroup:
+      name: "{{resource_group}}"
+      state: absent
+      force: yes

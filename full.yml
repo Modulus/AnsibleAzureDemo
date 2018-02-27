@@ -1,0 +1,2 @@
+- import_playbook: azure_core.yml
+- import_playbook: azure_vm.yml
